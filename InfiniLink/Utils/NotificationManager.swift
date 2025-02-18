@@ -32,6 +32,7 @@ class NotificationManager: ObservableObject {
     @Published var canSendNotifications = false
     
     @AppStorage("watchNotifications") var watchNotifications = true
+    @AppStorage("sendLowBatteryNotification") var sendBatteryNotifications = true
     @AppStorage("sendLowBatteryNotificationToiPhone") var sendLowBatteryNotificationToiPhone = true
     @AppStorage("sendLowBatteryNotificationToWatch") var sendLowBatteryNotificationToWatch = true
     
@@ -102,10 +103,10 @@ extension NotificationManager {
         let bat = bleManager.batteryLevel
         let notif = AppNotification(title: NSLocalizedString("Battery Low", comment: ""), subtitle: "\(String(format: "%.0f", bat))% " + NSLocalizedString("battery remaining", comment: ""))
         
-        if sendLowBatteryNotificationToWatch {
+        if sendLowBatteryNotificationToWatch && sendBatteryNotifications {
             self.bleWriteManager.sendNotification(notif)
         }
-        if sendLowBatteryNotificationToiPhone {
+        if sendLowBatteryNotificationToiPhone && sendBatteryNotifications {
             self.sendNotificationToHost(notif)
         }
     }

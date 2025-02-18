@@ -225,8 +225,8 @@ struct DeviceView: View {
                 
                 self.showNavigationTitle = (value <= -135)
             }
-            .onChange(of: bleManager.blefsTransfer) { _ in
-                if bleManager.blefsTransfer != nil {
+            .onChange(of: bleManager.blefsTransfer) { blefsTransfer in
+                if blefsTransfer != nil {
                     BLEFSHandler.shared.readSettings { settings in
                         deviceManager.updateSettings(settings: settings)
                     }

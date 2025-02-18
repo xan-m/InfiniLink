@@ -68,13 +68,19 @@ struct NotificationsSettingsView: View {
                     if heartRangeReminder {
                         HStack {
                             Text("Minimum")
+                            Spacer()
+                            Text("\(minHeartRange)")
                             Stepper("\(minHeartRange)", value: $minHeartRange, in: 40...(maxHeartRange - 1), step: 1)
                                 .fontWeight(.semibold)
+                                .labelsHidden()
                         }
                         HStack {
                             Text("Maximum")
+                            Spacer()
+                            Text("\(maxHeartRange)")
                             Stepper("\(maxHeartRange)", value: $maxHeartRange, in: (minHeartRange + 1)...220, step: 1)
                                 .fontWeight(.semibold)
+                                .labelsHidden()
                         }
                     }
                 }

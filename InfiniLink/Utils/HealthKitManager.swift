@@ -95,7 +95,7 @@ class HealthKitManager: ObservableObject {
         
         guard let healthStore = self.healthStore else { return }
         
-        healthStore.requestAuthorization(toShare: [steps, heartRate], read: []) { success, error in
+        healthStore.requestAuthorization(toShare: [steps, heartRate], read: [steps]) { success, error in
             if let error = error {
                 log(error.localizedDescription, caller: "HealthKitManager")
             }

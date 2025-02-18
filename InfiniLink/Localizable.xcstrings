@@ -565,15 +565,8 @@
     "Model Name" : {
 
     },
-    "Monthly Overview • %@ - %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Monthly Overview • %1$@ - %2$@"
-          }
-        }
-      }
+    "Monthly Overview" : {
+
     },
     "Music" : {
 
@@ -834,6 +827,9 @@
     "W" : {
 
     },
+    "Watch notifications are currently disabled." : {
+
+    },
     "Water Reminder" : {
 
     },
@@ -849,6 +845,16 @@
     "You can start one by choosing one from the list below." : {
 
     },
+    "You're %lld steps away your daily step goal! %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You're %1$lld steps away your daily step goal! %2$@"
+          }
+        }
+      }
+    },
     "You've reached your steps goal" : {
 
     },
@@ -857,16 +863,6 @@
     },
     "Your approximate weight, in lbs." : {
 
-    },
-    "Your daily step goal is %lld steps away. %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your daily step goal is %1$lld steps away. %2$@"
-          }
-        }
-      }
     }
   },
   "version" : "1.0"

@@ -11,6 +11,7 @@ struct BatterySettingsView: View {
     @AppStorage("sendLowBatteryNotification") var sendLowBatteryNotification = true
     @AppStorage("sendLowBatteryNotificationToiPhone") var sendLowBatteryNotificationToiPhone = true
     @AppStorage("sendLowBatteryNotificationToWatch") var sendLowBatteryNotificationToWatch = true
+    @AppStorage("watchNotifications") var watchNotifications = true
     
     @ObservedObject var bleManager = BLEManager.shared
     
@@ -52,9 +53,10 @@ struct BatterySettingsView: View {
                     Toggle("Notify on Low Battery", isOn: $sendLowBatteryNotification)
                 }
                 if sendLowBatteryNotification {
-                    Section {
+                    Section(footer: watchNotifications ? nil : Text("Watch notifications are currently disabled.")) {
                         Toggle("Send to iPhone", isOn: $sendLowBatteryNotificationToiPhone)
                         Toggle("Send to Watch", isOn: $sendLowBatteryNotificationToWatch)
+                            .disabled(!watchNotifications)
                     }
                 }
             }

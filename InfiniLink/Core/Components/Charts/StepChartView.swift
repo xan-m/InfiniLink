@@ -78,7 +78,7 @@ struct StepChartView: View {
                             y: .value("Steps", $0.steps)
                         )
                         .foregroundStyle(.blue)
-                        .opacity(!showSelectionBar || selectedDate.formatted(.dateTime.dayOfYear()) == $0.date.formatted(.dateTime.dayOfYear()) ? 1 : 0.5)
+                        .opacity(!showSelectionBar || selectedDate.comparable() == $0.date.comparable() ? 1 : 0.5)
                     }
                 }
                 .chartOverlay { proxy in
@@ -103,7 +103,7 @@ struct StepChartView: View {
                                         
                                         let (day, _) = proxy.value(at: location, as: (Date, Int).self) ?? (Date(), 0)
                                         // We compare the formatted dates because the dates are too specific otherwise
-                                        let steps = weekSteps().first(where: { $0.date.formatted(.dateTime.dayOfYear()) == day.formatted(.dateTime.dayOfYear()) })?.steps ?? 0
+                                        let steps = weekSteps().first(where: { $0.date.comparable() == day.comparable() })?.steps ?? 0
                                         
                                         selectedDate = day
                                         selectedSteps = steps
@@ -128,11 +128,11 @@ struct StepChartView: View {
                         if showSelectionBar {
                             return "\(selectedSteps) "
                         } else if !weekSteps().isEmpty {
-                            return "\(weekSteps().reduce(0) { $0 + $1.steps }) "
+                            return "\(weekSteps().reduce(0) { $0 + $1.steps } / weekSteps().count) "
                         }
                         return "0 "
                     }())
-                    .font(.system(.title, design: .rounded))
+                    .font(.system(size: 28))
                     .foregroundColor(.primary)
                     + Text("steps")
                     Text(showSelectionBar ? "\(selectedDate.formatted(date: .abbreviated, time: .omitted))" : "\(earliestDate.formatted(date: .abbreviated, time: .omitted)) - \(latestDate.formatted(date: .abbreviated, time: .omitted))")
@@ -149,17 +149,23 @@ struct StepChartView: View {
                         if (stepCountManager.stepGoal - bleManager.stepCount) <= 1000 {
                             return "Take a short walk or a start an activity to complete your goal."
                         }
-                        return "Set aside some time to complete a few activities to reach your goal."
+                        return "Complete a few activities to reach your goal."
                     }()
                     
-                    Text("Your daily step goal is \(stepCountManager.stepGoal - bleManager.stepCount) steps away. \(encouragementString)")
+                    Text("You're \(stepCountManager.stepGoal - bleManager.stepCount) steps away your daily step goal! \(encouragementString)")
                 }
             }
+            // TODO: move to separate component
             Section {
                 // TODO: add a monthly overview chart
             } header: {
-                Text("Monthly Overview • \(earliestDate.formatted(date: .abbreviated, time: .omitted)) - \(latestDate.formatted(date: .abbreviated, time: .omitted))")
-                    .fontWeight(.semibold)
+                VStack(alignment: .leading, spacing: 7) {
+                    Text("Monthly Overview")
+                    Text("\(earliestDate.formatted(.dateTime.month(.abbreviated).day())) - \(latestDate.formatted(date: .abbreviated, time: .omitted))")
+                        .font(.system(size: 20))
+                        .foregroundColor(.primary)
+                }
+                .fontWeight(.semibold)
             }
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets(top: 18, leading: 0, bottom: 0, trailing: 0))

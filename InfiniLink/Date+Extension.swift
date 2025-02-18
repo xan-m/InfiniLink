@@ -8,6 +8,10 @@
 import Foundation
 
 extension Date {
+    func comparable() -> String {
+        return self.formatted(.dateTime.dayOfYear())
+    }
+    
     static var startOfMonth: Date {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month], from: Date())
