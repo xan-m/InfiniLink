@@ -92,12 +92,16 @@ class DeviceManager: ObservableObject {
         fetchRequest.predicate = NSPredicate(format: "uuid == %@", id)
         
         do {
-            let existingDevices = try persistenceController.container.viewContext.fetch(fetchRequest)
+            let context = persistenceController.container.viewContext
+            let existingDevices = try context.fetch(fetchRequest)
+            
+            // There's already a paired watch
             if let existingDevice = existingDevices.first {
                 return existingDevice
             }
             
-            let newDevice = Device(context: persistenceController.container.viewContext)
+            // There's not already a paired watch, create a new object to save
+            let newDevice = Device(context: context)
             newDevice.uuid = id
             newDevice.bleUUID = id
             newDevice.blefsVersion = ""
@@ -108,9 +112,7 @@ class DeviceManager: ObservableObject {
             newDevice.modelNumber = ""
             newDevice.serial = ""
             
-            Task {
-                await persistenceController.save()
-            }
+            try context.save()
             
             return newDevice
         } catch {
@@ -121,8 +123,7 @@ class DeviceManager: ObservableObject {
     
     // Get settings from settings file from watch and save it to keep device object up-to-date
     func updateSettings(settings: Settings) {
-        guard let uuid = bleManager.pairedDevice?.uuid else { return }
-        guard let device = fetchDevice(with: uuid) else { return }
+        guard let device = fetchDevice() else { return }
         
         device.brightLevel = Int16(settings.brightLevel.rawValue)
         device.chimesOption = Int16(settings.chimesOption.rawValue)
@@ -193,13 +194,11 @@ class DeviceManager: ObservableObject {
         }
     }
     
-    func fetchAllDevices() async {
+    func fetchAllDevices() {
         let fetchRequest: NSFetchRequest<Device> = Device.fetchRequest()
         
         do {
-            try await persistenceController.container.performBackgroundTask { context in
-                self.watches = try context.fetch(fetchRequest)
-            }
+            self.watches = try self.persistenceController.container.viewContext.fetch(fetchRequest)
         } catch {
             log("Error fetching devices: \(error.localizedDescription)", caller: "DeviceManager")
         }

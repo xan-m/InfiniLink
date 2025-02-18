@@ -200,7 +200,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
                 await deviceManager.removeDevice(device ?? pairedDevice)
             }
             // Update the list of user watches
-            await deviceManager.fetchAllDevices()
+            deviceManager.fetchAllDevices()
             
             if let first = deviceManager.watches.first, deviceManager.watches.count <= 1 {
                 // Switch to the user's next watch

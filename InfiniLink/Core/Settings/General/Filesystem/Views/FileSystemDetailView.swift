@@ -135,8 +135,6 @@ struct FileSystemDetailView: View {
                         
                         guard let info = try? bleFs.convertDataToReadableFile(data: data, fileExtension: `extension`) else { return }
                         
-                        self.isLoadingFile = false
-                        
                         switch `extension` {
                         case "txt":
                             self.textData = info as? String
@@ -147,6 +145,8 @@ struct FileSystemDetailView: View {
                         default:
                             self.textData = "This file is not currently supported."
                         }
+                        
+                        self.isLoadingFile = false
                     }
                 }
             }

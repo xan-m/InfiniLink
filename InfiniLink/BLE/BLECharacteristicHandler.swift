@@ -19,8 +19,7 @@ struct BLECharacteristicHandler {
     let remindersManager = RemindersManager.shared
     let deviceManager = DeviceManager.shared
     let fitnessCalculator = FitnessCalculator.shared
-    
-    let viewContext = PersistenceController.shared.container.viewContext
+    let persistenceController = PersistenceController.shared
     
     @AppStorage("filterHeartRateData") var filterHeartRateData: Bool = false
     @AppStorage("remindOnStepGoalCompletion") var remindOnStepGoalCompletion = true
@@ -34,7 +33,7 @@ struct BLECharacteristicHandler {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
         
         do {
-            return try viewContext.fetch(fetchRequest)
+            return try persistenceController.container.viewContext.fetch(fetchRequest)
         } catch {
             log("Error fetching heart points: \(error)", caller: "BLECharacteristicHandler")
             return []
