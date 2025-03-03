@@ -35,6 +35,7 @@
 - Download and install InfiniTime firmware updates from releases and GitHub Actions using the GitHub API (local file updates are supported)
 
 ### Partially implemented features:
+- Apple Charts with date range selection
 - System-wide notifications—implemented in [#2217](https://github.com/InfiniTimeOrg/InfiniTime/pull/2217), but not available in the main branch yet.
 
 ### Currently non-functional features:
